@@ -10,7 +10,6 @@
                 "crypto/blake3_portable.c",
                 "crypto/chacha20.c",
                 "crypto/chacha20_dispatch.c",
-                "scryptjane.c",
                 "scryptn.c",
 		        "yespower/yespower-opt.c",
 		        "yespower/yespower.c",
