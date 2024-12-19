@@ -198,7 +198,6 @@ uint64_t static inline le_bytes_to_uint64(const uint8_t *bytes)
 
 void static inline aes_single_round(uint8_t *block, const uint8_t *key)
 {
-	/* #if defined(__x86_64__)
 	__m128i block_vec = _mm_loadu_si128((const __m128i *)block);
 	__m128i key_vec = _mm_loadu_si128((const __m128i *)key);
 
@@ -206,9 +205,8 @@ void static inline aes_single_round(uint8_t *block, const uint8_t *key)
 	block_vec = _mm_aesenc_si128(block_vec, key_vec);
 
 	_mm_storeu_si128((__m128i *)block, block_vec);
-   #else */
 	aes_single_round_no_intrinsics(block, key);
-/*   #endif */
+   #endif
 
 }
 
