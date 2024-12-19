@@ -21,7 +21,7 @@ CFLAGS_Debug := \
 	-Wall \
 	-Wextra \
 	-Wno-unused-parameter \
-	-m64 \
+	-fPIC \
 	-g \
 	-O0
 
@@ -32,14 +32,17 @@ CFLAGS_C_Debug :=
 CFLAGS_CC_Debug := \
 	-fno-rtti \
 	-fno-exceptions \
-	-std=gnu++0x \
+	-std=gnu++1y \
 	-std=c++0x
 
 INCS_Debug := \
-	-I/root/.node-gyp/8.11.4/include/node \
-	-I/root/.node-gyp/8.11.4/src \
-	-I/root/.node-gyp/8.11.4/deps/uv/include \
-	-I/root/.node-gyp/8.11.4/deps/v8/include \
+	-I/usr/include/nodejs/include/node \
+	-I/usr/include/nodejs/src \
+	-I/usr/include/nodejs/deps/openssl/config \
+	-I/usr/include/nodejs/deps/openssl/openssl/include \
+	-I/usr/include/nodejs/deps/uv/include \
+	-I/usr/include/nodejs/deps/zlib \
+	-I/usr/include/nodejs/deps/v8/include \
 	-I$(srcdir)/crypto \
 	-I$(srcdir)/../nan
 
@@ -59,7 +62,7 @@ CFLAGS_Release := \
 	-Wall \
 	-Wextra \
 	-Wno-unused-parameter \
-	-m64 \
+	-fPIC \
 	-O3 \
 	-fno-omit-frame-pointer
 
@@ -70,19 +73,28 @@ CFLAGS_C_Release :=
 CFLAGS_CC_Release := \
 	-fno-rtti \
 	-fno-exceptions \
-	-std=gnu++0x \
+	-std=gnu++1y \
 	-std=c++0x
 
 INCS_Release := \
-	-I/root/.node-gyp/8.11.4/include/node \
-	-I/root/.node-gyp/8.11.4/src \
-	-I/root/.node-gyp/8.11.4/deps/uv/include \
-	-I/root/.node-gyp/8.11.4/deps/v8/include \
+	-I/usr/include/nodejs/include/node \
+	-I/usr/include/nodejs/src \
+	-I/usr/include/nodejs/deps/openssl/config \
+	-I/usr/include/nodejs/deps/openssl/openssl/include \
+	-I/usr/include/nodejs/deps/uv/include \
+	-I/usr/include/nodejs/deps/zlib \
+	-I/usr/include/nodejs/deps/v8/include \
 	-I$(srcdir)/crypto \
 	-I$(srcdir)/../nan
 
 OBJS := \
 	$(obj).target/$(TARGET)/multihashing.o \
+	$(obj).target/$(TARGET)/xelisv2.o \
+	$(obj).target/$(TARGET)/crypto/blake3.o \
+	$(obj).target/$(TARGET)/crypto/blake3_dispatch.o \
+	$(obj).target/$(TARGET)/crypto/blake3_portable.o \
+	$(obj).target/$(TARGET)/crypto/chacha20.o \
+	$(obj).target/$(TARGET)/crypto/chacha20_dispatch.o \
 	$(obj).target/$(TARGET)/scryptjane.o \
 	$(obj).target/$(TARGET)/scryptn.o \
 	$(obj).target/$(TARGET)/yespower/yespower-opt.o \
@@ -115,6 +127,7 @@ OBJS := \
 	$(obj).target/$(TARGET)/sha256d.o \
 	$(obj).target/$(TARGET)/x15.o \
 	$(obj).target/$(TARGET)/fresh.o \
+	$(obj).target/$(TARGET)/memehash.o \
 	$(obj).target/$(TARGET)/sha3/sph_hefty1.o \
 	$(obj).target/$(TARGET)/sha3/sph_fugue.o \
 	$(obj).target/$(TARGET)/sha3/aes_helper.o \
@@ -157,16 +170,19 @@ $(OBJS): GYP_CXXFLAGS := $(DEFS_$(BUILDTYPE)) $(INCS_$(BUILDTYPE))  $(CFLAGS_$(B
 
 # Suffix rules, putting all outputs into $(obj).
 
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.cpp FORCE_DO_CMD
+	@$(call do_cmd,cxx,1)
+
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.cc FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.c FORCE_DO_CMD
 	@$(call do_cmd,cc,1)
 
-$(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.cpp FORCE_DO_CMD
-	@$(call do_cmd,cxx,1)
-
 # Try building from generated source, too.
+
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cpp FORCE_DO_CMD
+	@$(call do_cmd,cxx,1)
 
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cc FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
@@ -174,7 +190,7 @@ $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cc FORCE_DO_CMD
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.c FORCE_DO_CMD
 	@$(call do_cmd,cc,1)
 
-$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cpp FORCE_DO_CMD
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cpp FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cc FORCE_DO_CMD
@@ -183,22 +199,18 @@ $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cc FORCE_DO_CMD
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.c FORCE_DO_CMD
 	@$(call do_cmd,cc,1)
 
-$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cpp FORCE_DO_CMD
-	@$(call do_cmd,cxx,1)
-
 # End of this set of suffix rules
 ### Rules for final target.
 LDFLAGS_Debug := \
 	-pthread \
-	-rdynamic \
-	-m64
+	-rdynamic
 
 LDFLAGS_Release := \
 	-pthread \
-	-rdynamic \
-	-m64
+	-rdynamic
 
-LIBS :=
+LIBS := \
+	-lnode
 
 $(obj).target/multihashing.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(obj).target/multihashing.node: LIBS := $(LIBS)

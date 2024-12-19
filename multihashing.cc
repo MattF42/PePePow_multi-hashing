@@ -22,6 +22,7 @@ extern "C" {
     #include "quark.h"
     #include "qubit.h"
     #include "memehash.h"	
+    #include "xelisv2.h"	
     #include "scryptjane.h"
     #include "scryptn.h"
     #include "sha1.h"
@@ -125,6 +126,7 @@ using namespace v8;
  DECLARE_CALLBACK(nist5, nist5_hash, 32);
  DECLARE_CALLBACK(quark, quark_hash, 32);
  DECLARE_CALLBACK(meme, meme_hash, 32);
+ DECLARE_CALLBACK(xelisv2, xelisv2_hash, 32);
  DECLARE_CALLBACK(qubit, qubit_hash, 32);
  DECLARE_CALLBACK(sha1, sha1_hash, 32);
  DECLARE_CALLBACK(sha256d, sha256d_hash, 32);
@@ -590,6 +592,7 @@ DECLARE_INIT(init) {
     NODE_SET_METHOD(exports, "neoscrypt", neoscrypt);
     NODE_SET_METHOD(exports, "nist5", nist5);
     NODE_SET_METHOD(exports, "meme", meme);	
+    NODE_SET_METHOD(exports, "xelisv2", xelisv2);	
     NODE_SET_METHOD(exports, "quark", quark);
     NODE_SET_METHOD(exports, "qubit", qubit);
     NODE_SET_METHOD(exports, "scrypt", scrypt);

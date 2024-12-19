@@ -4,6 +4,12 @@
             "target_name": "multihashing",
             "sources": [
                 "multihashing.cc",
+                "xelisv2.c",
+                "crypto/blake3.c",
+                "crypto/blake3_dispatch.c",
+                "crypto/blake3_portable.c",
+                "crypto/chacha20.c",
+                "crypto/chacha20_dispatch.c",
                 "scryptjane.c",
                 "scryptn.c",
 		        "yespower/yespower-opt.c",

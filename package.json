@@ -1,28 +1,45 @@
 {
-  "_from": "git://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5.git",
+  "_args": [
+    [
+      "multi-hashing@git+https://github.com/avgttt/PePePow_multi-hashing.git#main",
+      "/home/nomp/node-open-mining-portal/node_modules/stratum-pool"
+    ]
+  ],
+  "_from": "git+https://github.com/avgttt/PePePow_multi-hashing.git#main",
   "_id": "multi-hashing@0.0.9",
   "_inBundle": false,
+  "_inCache": true,
+  "_installable": true,
   "_location": "/multi-hashing",
   "_phantomChildren": {},
   "_requested": {
-    "type": "git",
-    "raw": "multi-hashing@git://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5.git",
+    "hosted": {
+      "directUrl": "https://raw.githubusercontent.com/avgttt/PePePow_multi-hashing/main/package.json",
+      "gitUrl": "git://github.com/avgttt/PePePow_multi-hashing.git#main",
+      "httpsUrl": "git+https://github.com/avgttt/PePePow_multi-hashing.git#main",
+      "shortcut": "github:avgttt/PePePow_multi-hashing#main",
+      "ssh": "git@github.com:avgttt/PePePow_multi-hashing.git#main",
+      "sshUrl": "git+ssh://git@github.com/avgttt/PePePow_multi-hashing.git#main",
+      "type": "github"
+    },
     "name": "multi-hashing",
-    "escapedName": "multi-hashing",
-    "rawSpec": "git://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5.git",
-    "saveSpec": "git://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5.git",
-    "fetchSpec": "git://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5.git",
-    "gitCommittish": null
+    "raw": "multi-hashing@git+https://github.com/avgttt/PePePow_multi-hashing.git#main",
+    "rawSpec": "git+https://github.com/avgttt/PePePow_multi-hashing.git#main",
+    "scope": null,
+    "spec": "git+https://github.com/avgttt/PePePow_multi-hashing.git#main",
+    "type": "hosted"
   },
   "_requiredBy": [
     "/stratum-pool"
   ],
-  "_resolved": "git://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5.git#79be6a410444deaabcc657e6a1ee5a811c510ba8",
-  "_spec": "multi-hashing@git://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5.git",
-  "_where": "/root/zny-nomp/node_modules/stratum-pool",
+  "_resolved": "git+https://github.com/avgttt/PePePow_multi-hashing.git#22aabe355664e798199ab0bda19d497e0fbca5ef",
+  "_shasum": "30fa39f9f9dd7277a94a57f9d04049ab59742ade",
+  "_shrinkwrap": null,
+  "_spec": "multi-hashing@git+https://github.com/avgttt/PePePow_multi-hashing.git#main",
+  "_where": "/home/nomp/node-open-mining-portal/node_modules/stratum-pool",
   "author": {
-    "name": "Matthew Little",
-    "email": "zone117x@gmail.com"
+    "email": "zone117x@gmail.com",
+    "name": "Matthew Little"
   },
   "bugs": {
     "url": "https://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5/issues"
@@ -34,27 +51,32 @@
   },
   "deprecated": false,
   "description": "node-multi-hashing ===============",
+  "devDependencies": {},
+  "gitHead": "22aabe355664e798199ab0bda19d497e0fbca5ef",
   "gypfile": true,
   "homepage": "https://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5#readme",
   "keywords": [
+    "bcrypt",
+    "blake",
+    "fugue",
+    "keccak",
+    "keccak_hash",
+    "quark",
+    "script-n",
     "scrypt",
     "scryptjane",
-    "script-n",
-    "yescrypt",
-    "x11",
-    "quark",
-    "keccak_hash",
-    "skein",
-    "bcrypt",
-    "keccak",
-    "blake",
+    "sha1",
     "shavite",
-    "fugue",
-    "sha1"
+    "skein",
+    "x11",
+    "yescrypt"
   ],
   "license": "SEE LICENSE IN <filename>",
   "main": "multihashing",
   "name": "multi-hashing",
+  "optionalDependencies": {},
+  "readme": "node-multi-hashing\n===============\n\n[![Build Status](https://travis-ci.org/zone117x/node-multi-hashing.png?branch=master)](https://travis-ci.org/zone117x/node-multi-hashing)\n\n[![NPM](https://nodei.co/npm/multi-hashing.png?downloads=true&stars=true)](https://nodei.co/npm/multi-hashing/)\n\nCryptocurrency hashing functions for node.js.\n\n\nAlgorithms\n----------\n* quark\n* x11\n* x13\n* nist5\n* scrypt\n* scryptn\n* scryptjane\n* keccak\n* bcrypt\n* skein\n* groestl\n* blake\n* fugue\n* qubit\n* hefty1\n* shavite3\n* cryptonight\n* boolberry\n* sha256d\n* lbry\n* yespower\n* lyra2re2\n* memehash\n\n\nUsage\n-----\n\nInstall\n\n```bash\nnpm install multi-hashing\n```\n\nSo far this native Node.js addon can do the following hashing algos\n\n```javascript\nvar multiHashing = require('multi-hashing');\n\nvar algorithms = ['quark', 'x11', 'scrypt', 'scryptn', 'scryptjane', 'keccak', 'bcrypt', 'skein', 'blake', 'yescrypt-0.5', 'yespower', 'lyra2re2'];\n\nvar data = new Buffer(\"7000000001e980924e4e1109230383e66d62945ff8e749903bea4336755c00000000000051928aff1b4d72416173a8c3948159a09a73ac3bb556aa6bfbcad1a85da7f4c1d13350531e24031b939b9e2b\", \"hex\");\n\nvar hashedData = algorithms.map(function(algo){\n    if (algo === 'scryptjane'){\n        //scryptjane needs block.nTime and nChainStartTime (found in coin source)\n        var yaCoinChainStartTime = 1367991200;\n        var nTime = Math.round(Date.now() / 1000);\n        return multiHashing[algo](data, nTime, yaCoinChainStartTime);\n    }\n    else{\n        return multiHashing[algo](data);\n    }\n});\n\n\nconsole.log(hashedData);\n//<SlowBuffer 0b de 16 ef 2d 92 e4 35 65 c6 6c d8 92 d9 66 b4 3d 65 ..... >\n\n\n```\n\nCredits\n-------\n* [NSA](http://www.nsa.gov/) and [NIST](http://www.nist.gov/) for creation or sponsoring creation of SHA2 and SHA3 algos\n* [Keccak](http://en.wikipedia.org/wiki/Keccak) - Guido Bertoni, Joan Daemen, Michaël Peeters, and Gilles Van Assche\n* [Skein](http://en.wikipedia.org/wiki/Skein_(hash_function)) - Bruce Schneier, Stefan Lucks, Niels Ferguson, Doug Whiting, Mihir Bellare, Tadayoshi Kohno, Jon Callas and Jesse Walker.\n* [BLAKE](http://en.wikipedia.org/wiki/BLAKE_(hash_function)) - Jean-Philippe Aumasson, Luca Henzen, Willi Meier, and Raphael C.-W. Phan\n* [Grøstl](http://en.wikipedia.org/wiki/Gr%C3%B8stl) - Praveen Gauravaram, Lars Knudsen, Krystian Matusiewicz, Florian Mendel, Christian Rechberger, Martin Schläffer, and Søren S. Thomsen\n* [JH](http://en.wikipedia.org/wiki/JH_(hash_function)) - Hongjun Wu\n* [Fugue](http://en.wikipedia.org/wiki/Fugue_(hash_function)) - Shai Halevi, William E. Hall, and Charanjit S. Jutla\n* [scrypt](http://en.wikipedia.org/wiki/Scrypt) - Colin Percival\n* [bcrypt](http://en.wikipedia.org/wiki/Bcrypt) - Niels Provos and David Mazières\n* [X11](http://www.darkcoin.io/), [Hefty1](http://heavycoin.github.io/about.html), [Quark](http://www.qrk.cc/) creators (they just mixed together a bunch of the above algos)\n",
+  "readmeFilename": "README.md",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ROZ-MOFUMOFU-ME/node-multi-hashing-yescrypt-0.5.git"
