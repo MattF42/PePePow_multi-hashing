@@ -134,7 +134,7 @@ static double SafeComplexTransform(double input) {
     while (isnan(transformedValue) || isinf(transformedValue)) {
         input = input * 0.1;
         if (input <= 0.0000000000001) {
-            return 0 * rounds;
+            return 0;
         }
         rounds++;
     }
@@ -220,6 +220,8 @@ void hoohashv110(const void* data, size_t len, uint8_t output[HOOHASH_HASH_SIZE]
     // Enforce the preimage definition: header bytes from nVersion..nNonce (80 bytes).
     // This prevents accidental consensus changes if callers pass a different length.
     if (len != 80) {
+        // Zero output buffer on error to ensure deterministic behavior
+        memset(output, 0, HOOHASH_HASH_SIZE);
         return;
     }
 
