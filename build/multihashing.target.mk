@@ -7,12 +7,15 @@ DEFS_Debug := \
 	'-DUSING_UV_SHARED=1' \
 	'-DUSING_V8_SHARED=1' \
 	'-DV8_DEPRECATION_WARNINGS=1' \
-	'-D_LARGEFILE_SOURCE' \
+	'-D_GLIBCXX_USE_CXX11_ABI=1' \
 	'-D_FILE_OFFSET_BITS=64' \
+	'-D_LARGEFILE_SOURCE' \
+	'-D__STDC_FORMAT_MACROS' \
+	'-DOPENSSL_NO_PINSHARED' \
+	'-DOPENSSL_THREADS' \
 	'-DBUILDING_NODE_EXTENSION' \
 	'-DDEBUG' \
-	'-D_DEBUG' \
-	'-DV8_ENABLE_CHECKS'
+	'-D_DEBUG'
 
 # Flags passed to all source files.
 CFLAGS_Debug := \
@@ -21,7 +24,12 @@ CFLAGS_Debug := \
 	-Wall \
 	-Wextra \
 	-Wno-unused-parameter \
-	-fPIC \
+	-march=native \
+	-maes \
+	-msse4.1 \
+	-msse4.2 \
+	-mpclmul \
+	-m64 \
 	-g \
 	-O0
 
@@ -32,27 +40,37 @@ CFLAGS_C_Debug :=
 CFLAGS_CC_Debug := \
 	-fno-rtti \
 	-fno-exceptions \
-	-std=gnu++1y \
-	-std=c++0x
+	-fno-strict-aliasing \
+	-std=gnu++20 \
+	-std=c++20 \
+	-march=native \
+	-maes \
+	-msse4.1 \
+	-msse4.2 \
+	-mpclmul
 
 INCS_Debug := \
-	-I/usr/include/nodejs/include/node \
-	-I/usr/include/nodejs/src \
-	-I/usr/include/nodejs/deps/openssl/config \
-	-I/usr/include/nodejs/deps/openssl/openssl/include \
-	-I/usr/include/nodejs/deps/uv/include \
-	-I/usr/include/nodejs/deps/zlib \
-	-I/usr/include/nodejs/deps/v8/include \
+	-I/home/runner/.cache/node-gyp/24.13.0/include/node \
+	-I/home/runner/.cache/node-gyp/24.13.0/src \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/openssl/config \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/openssl/openssl/include \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/uv/include \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/zlib \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/v8/include \
 	-I$(srcdir)/crypto \
-	-I$(srcdir)/../nan
+	-I$(srcdir)/node_modules/nan
 
 DEFS_Release := \
 	'-DNODE_GYP_MODULE_NAME=multihashing' \
 	'-DUSING_UV_SHARED=1' \
 	'-DUSING_V8_SHARED=1' \
 	'-DV8_DEPRECATION_WARNINGS=1' \
-	'-D_LARGEFILE_SOURCE' \
+	'-D_GLIBCXX_USE_CXX11_ABI=1' \
 	'-D_FILE_OFFSET_BITS=64' \
+	'-D_LARGEFILE_SOURCE' \
+	'-D__STDC_FORMAT_MACROS' \
+	'-DOPENSSL_NO_PINSHARED' \
+	'-DOPENSSL_THREADS' \
 	'-DBUILDING_NODE_EXTENSION'
 
 # Flags passed to all source files.
@@ -62,7 +80,12 @@ CFLAGS_Release := \
 	-Wall \
 	-Wextra \
 	-Wno-unused-parameter \
-	-fPIC \
+	-march=native \
+	-maes \
+	-msse4.1 \
+	-msse4.2 \
+	-mpclmul \
+	-m64 \
 	-O3 \
 	-fno-omit-frame-pointer
 
@@ -73,29 +96,36 @@ CFLAGS_C_Release :=
 CFLAGS_CC_Release := \
 	-fno-rtti \
 	-fno-exceptions \
-	-std=gnu++1y \
-	-std=c++0x
+	-fno-strict-aliasing \
+	-std=gnu++20 \
+	-std=c++20 \
+	-march=native \
+	-maes \
+	-msse4.1 \
+	-msse4.2 \
+	-mpclmul
 
 INCS_Release := \
-	-I/usr/include/nodejs/include/node \
-	-I/usr/include/nodejs/src \
-	-I/usr/include/nodejs/deps/openssl/config \
-	-I/usr/include/nodejs/deps/openssl/openssl/include \
-	-I/usr/include/nodejs/deps/uv/include \
-	-I/usr/include/nodejs/deps/zlib \
-	-I/usr/include/nodejs/deps/v8/include \
+	-I/home/runner/.cache/node-gyp/24.13.0/include/node \
+	-I/home/runner/.cache/node-gyp/24.13.0/src \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/openssl/config \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/openssl/openssl/include \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/uv/include \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/zlib \
+	-I/home/runner/.cache/node-gyp/24.13.0/deps/v8/include \
 	-I$(srcdir)/crypto \
-	-I$(srcdir)/../nan
+	-I$(srcdir)/node_modules/nan
 
 OBJS := \
 	$(obj).target/$(TARGET)/multihashing.o \
+	$(obj).target/$(TARGET)/hoohashv110.o \
+	$(obj).target/$(TARGET)/crypto/hoohash/hoohash.o \
 	$(obj).target/$(TARGET)/xelisv2.o \
 	$(obj).target/$(TARGET)/crypto/blake3.o \
 	$(obj).target/$(TARGET)/crypto/blake3_dispatch.o \
 	$(obj).target/$(TARGET)/crypto/blake3_portable.o \
 	$(obj).target/$(TARGET)/crypto/chacha20.o \
 	$(obj).target/$(TARGET)/crypto/chacha20_dispatch.o \
-	$(obj).target/$(TARGET)/scryptjane.o \
 	$(obj).target/$(TARGET)/scryptn.o \
 	$(obj).target/$(TARGET)/yespower/yespower-opt.o \
 	$(obj).target/$(TARGET)/yespower/yespower.o \
@@ -170,10 +200,10 @@ $(OBJS): GYP_CXXFLAGS := $(DEFS_$(BUILDTYPE)) $(INCS_$(BUILDTYPE))  $(CFLAGS_$(B
 
 # Suffix rules, putting all outputs into $(obj).
 
-$(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.cpp FORCE_DO_CMD
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.cc FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
-$(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.cc FORCE_DO_CMD
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.cpp FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.c FORCE_DO_CMD
@@ -181,19 +211,19 @@ $(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.c FORCE_DO_CMD
 
 # Try building from generated source, too.
 
-$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cpp FORCE_DO_CMD
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cc FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
-$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cc FORCE_DO_CMD
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cpp FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.c FORCE_DO_CMD
 	@$(call do_cmd,cc,1)
 
-$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cpp FORCE_DO_CMD
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cc FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
-$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cc FORCE_DO_CMD
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cpp FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.c FORCE_DO_CMD
@@ -203,14 +233,15 @@ $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.c FORCE_DO_CMD
 ### Rules for final target.
 LDFLAGS_Debug := \
 	-pthread \
-	-rdynamic
+	-rdynamic \
+	-m64
 
 LDFLAGS_Release := \
 	-pthread \
-	-rdynamic
+	-rdynamic \
+	-m64
 
-LIBS := \
-	-lnode
+LIBS :=
 
 $(obj).target/multihashing.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(obj).target/multihashing.node: LIBS := $(LIBS)
