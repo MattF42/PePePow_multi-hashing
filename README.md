@@ -33,6 +33,8 @@ Algorithms
 * yespower
 * lyra2re2
 * memehash
+* xelisv2
+* hoohashv110
 
 
 Usage
@@ -70,6 +72,42 @@ console.log(hashedData);
 //<SlowBuffer 0b de 16 ef 2d 92 e4 35 65 c6 6c d8 92 d9 66 b4 3d 65 ..... >
 
 
+```
+
+### HoohashV110 Usage
+
+HoohashV110 requires exactly 80 bytes of input (Bitcoin block header format):
+
+```javascript
+var multiHashing = require('multi-hashing');
+
+// 80-byte block header
+var blockHeader = Buffer.from("7000000001e980924e4e1109230383e66d62945ff8e749903bea4336755c00000000000051928aff1b4d72416173a8c3948159a09a73ac3bb556aa6bfbcad1a85da7f4c1d13350531e24031b939b9e2b", "hex");
+
+var hash = multiHashing.hoohashv110(blockHeader);
+console.log(hash); // 32-byte hash output
+```
+
+### Algorithm Selection for Pool Software
+
+When implementing pool software, algorithm selection should be based on block version bits:
+
+- **HoohashV110**: Use when block version has bit `0x4000` set (version & 0x4000 == 0x4000)
+- **XelisV2**: Use when block version has bit `0x8000` set (version & 0x8000 == 0x8000)
+- **Default algorithm**: Use for other block versions as specified by the coin
+
+Example algorithm selection logic:
+
+```javascript
+function selectHashAlgorithm(blockVersion) {
+    if (blockVersion & 0x4000) {
+        return 'hoohashv110';
+    } else if (blockVersion & 0x8000) {
+        return 'xelisv2';
+    } else {
+        return 'default'; // or other configured algorithm
+    }
+}
 ```
 
 Credits

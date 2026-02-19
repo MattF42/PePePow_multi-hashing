@@ -4,6 +4,8 @@
       "target_name": "multihashing",
       "sources": [
         "multihashing.cc",
+        "hoohashv110.c",
+        "crypto/hoohash/hoohash.c",
         "xelisv2.c",
         "crypto/blake3.c",
         "crypto/blake3_dispatch.c",
@@ -87,7 +89,7 @@
         "-mpclmul"
       ],
       "cflags_cc": [
-        "-std=c++0x",
+        "-std=c++20",
         "-march=native",
         "-maes",
         "-msse4.1",
