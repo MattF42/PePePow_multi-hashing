@@ -213,8 +213,11 @@ static void HoohashMatrixMultiplication(double mat[64][64], const uint8_t *hashB
     blake3_hasher_finalize(&hasher, output, HOOHASH_HASH_SIZE);
 }
 
+
 // Main HoohashV110 function
 // For Bitcoin-derived blockchain PoW, we hash the entire (80-byte) block header
+// BUT - for the matrix, so there is only one per Tip to solve, we zero the nonce
+
 void hoohashv110(const void* data, size_t len, uint8_t output[HOOHASH_HASH_SIZE])
 {
     // Enforce the preimage definition: header bytes from nVersion..nNonce (80 bytes).
@@ -230,19 +233,33 @@ void hoohashv110(const void* data, size_t len, uint8_t output[HOOHASH_HASH_SIZE]
     uint8_t matrixSeed[HOOHASH_HASH_SIZE];
     double mat[64][64];
 
-    // First BLAKE3 pass on input data (the block header bytes)
+    // First BLAKE3 pass on the full 80-byte header (nonce included).
     blake3_hasher_init(&hasher);
     blake3_hasher_update(&hasher, data, len);
     blake3_hasher_finalize(&hasher, firstPass, HOOHASH_HASH_SIZE);
 
-    // Use first pass to seed matrix generation
-    memcpy(matrixSeed, firstPass, HOOHASH_HASH_SIZE);
+    /*
+     * NEW CONSENSUS (PePePoW):
+     * The per-block matrix must NOT depend on the nonce.
+     * matrixSeed = BLAKE3(header80 with nonce bytes zeroed)
+     * nonce is still used later in HoohashMatrixMultiplication().
+     */
+    uint8_t masked_header[80];
+    memcpy(masked_header, data, 80);
+    memset(masked_header + 76, 0, 4); /* zero nNonce (uint32 little-endian at offset 76) */
+
+    blake3_hasher_init(&hasher);
+    blake3_hasher_update(&hasher, masked_header, 80);
+    blake3_hasher_finalize(&hasher, matrixSeed, HOOHASH_HASH_SIZE);
+
     generateHoohashMatrix(matrixSeed, mat);
 
     // Bitcoin/Dash-style headers: nonce is 4 bytes at offset 76, little-endian
     const uint8_t* nonce_ptr = ((const uint8_t*)data) + 76;
     const uint64_t nonce = (uint64_t)read_uint32_le(nonce_ptr);
 
-    // Perform matrix multiplication
+    // Perform matrix multiplication using:
+    // - firstPass derived from the full header (nonce-dependent)
+    // - mat derived from masked header (nonce-independent)
     HoohashMatrixMultiplication(mat, firstPass, output, nonce);
 }
