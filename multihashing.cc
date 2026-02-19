@@ -63,7 +63,7 @@ using namespace v8;
 
 #define RETURN_EXCEPT(msg) \
     do { \
-        isolate->ThrowException(Exception::Error(String::NewFromUtf8(isolate, msg).ToLocalChecked())); \
+        isolate->ThrowException(Exception::Error(Nan::New(msg).ToLocalChecked())); \
         return; \
     } while (0)
 
@@ -274,7 +274,7 @@ DECLARE_FUNC(cryptonight) {
 
     if (args.Length() >= 2) {
         if(args[1]->IsBoolean())
-            fast = args[1]->BooleanValue(isolate);
+            fast = Nan::To<bool>(args[1]).FromMaybe(false);
         else if(args[1]->IsUint32())
             cn_variant = args[1]->Uint32Value(isolate->GetCurrentContext()).ToChecked();
         else
@@ -311,7 +311,7 @@ DECLARE_FUNC(cryptonightfast) {
 
     if (args.Length() >= 2) {
         if(args[1]->IsBoolean())
-            fast = args[1]->BooleanValue(isolate);
+            fast = Nan::To<bool>(args[1]).FromMaybe(false);
         else if(args[1]->IsUint32())
             cn_variant = args[1]->Uint32Value(isolate->GetCurrentContext()).ToChecked();
         else
