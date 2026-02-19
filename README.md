@@ -46,6 +46,9 @@ Install
 npm install multi-hashing
 ```
 
+> **Node 10 / NOMP environments:** Building on Node.js v10.x requires node-gyp 5.x and Python ≤ 3.10.
+> Ensure your environment satisfies these constraints before running `npm install` or `node-gyp rebuild`.
+
 So far this native Node.js addon can do the following hashing algos
 
 ```javascript
