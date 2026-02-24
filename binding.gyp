@@ -82,7 +82,12 @@
         "<!(node -e \"require('nan')\")"
       ],
       "cflags": [
-        "-march=native",
+        "-fno-fast-math",
+        "-fno-unsafe-math-optimizations",
+        "-ffp-contract=off",
+        "-fexcess-precision=standard",
+        "-mno-fma",
+        "-mno-fma4",
         "-maes",
         "-msse4.1",
         "-msse4.2",
@@ -90,7 +95,12 @@
       ],
       "cflags_cc": [
         "-std=c++20",
-        "-march=native",
+        "-fno-fast-math",
+        "-fno-unsafe-math-optimizations",
+        "-ffp-contract=off",
+        "-fexcess-precision=standard",
+        "-mno-fma",
+        "-mno-fma4",
         "-maes",
         "-msse4.1",
         "-msse4.2",
